@@ -1,5 +1,6 @@
 const fs = require('fs');
 const http = require('http');
+const url = require('url');
 
 ////////////////////////////////
 // FILES
@@ -30,8 +31,14 @@ const http = require('http');
 ////////////////////////////////
 // SERVER
 const server = http.createServer((req, res) => {
-    console.log(req);
-    res.end('Estamos en este momento comunicanonos con el servidor');
+    const pathName = req.url;
+
+    if (pathName === '/' | pathName === '/overview') {
+        res.end('Estamos en este momento comunicanonos por overview');
+    } else if (pathName === '/product') {
+        res.end('Estamos en este momento comunicanonos por product');        
+    }
+
 });
 
 server.listen(8000, '127.0.0.1', () => {
