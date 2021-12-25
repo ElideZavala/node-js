@@ -38,8 +38,11 @@ const server = http.createServer((req, res) => {
     } else if (pathName === '/product') {
         res.end('Estamos en este momento comunicanonos por product');        
     } else {
-        res.writeHead(404);
-        res.end('Page not fount!')
+        res.writeHead(404, {
+            'Content-type': 'text/html',
+            'my-own-header': 'hello-world'
+        });
+        res.end('<h1>Page not fount!</h1>')
     }
 }); 
 
