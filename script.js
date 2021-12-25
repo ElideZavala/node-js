@@ -37,9 +37,11 @@ const server = http.createServer((req, res) => {
         res.end('Estamos en este momento comunicanonos por overview');
     } else if (pathName === '/product') {
         res.end('Estamos en este momento comunicanonos por product');        
+    } else {
+        res.writeHead(404);
+        res.end('Page not fount!')
     }
-
-});
+}); 
 
 server.listen(8000, '127.0.0.1', () => {
     console.log('Listening to requests on port 8000');
