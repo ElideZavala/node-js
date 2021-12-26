@@ -46,7 +46,7 @@ const server = http.createServer((req, res) => {
         res.writeHead(200, { 'Content-type': 'text/html'});
         res.end('Estamos en este momento comunicanonos por overview');
 
-        const cardHtml = dataObj.map()
+        const cardHtml = dataObj.map(el => repleceTemplate(tempCard))
 9
         res.end(tempOverview);
 
