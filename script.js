@@ -1,3 +1,4 @@
+const { RSA_NO_PADDING } = require('constants');
 const fs = require('fs');
 const http = require('http');
 const url = require('url');
@@ -30,6 +31,9 @@ const url = require('url');
 
 ////////////////////////////////
 // SERVER
+const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8'); // lee los  datos del directorio JSON. 
+const dataObj = JSON.parse(data);      // Vamos a leer los datos de la Api. 
+
 const server = http.createServer((req, res) => {
     const pathName = req.url;
 
@@ -37,6 +41,9 @@ const server = http.createServer((req, res) => {
         res.end('Estamos en este momento comunicanonos por overview');
     } else if (pathName === '/product') {
         res.end('Estamos en este momento comunicanonos por product');        
+    } else if (pathName === '/api') {
+        res.writeHead(200, { 'Content-type': 'application/json'} )
+        res.end(data);
     } else {
         res.writeHead(404, {
             'Content-type': 'text/html',
@@ -48,4 +55,4 @@ const server = http.createServer((req, res) => {
 
 server.listen(8000, '127.0.0.1', () => {
     console.log('Listening to requests on port 8000');
-})
+}) 
