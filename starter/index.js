@@ -31,19 +31,35 @@ const url = require('url');
 
 ////////////////////////////////
 // SERVER
+const tempOverview = fs.readFileSync(`${__dirname}/templates/template-overview.html`, 'utf-8'); 
+const tempCard = fs.readFileSync(`${__dirname}/templates/template-card.html`, 'utf-8'); 
+const tempProduct = fs.readFileSync(`${__dirname}/templates/template-product.html`, 'utf-8'); 
+
 const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8'); // lee los  datos del directorio JSON. 
 const dataObj = JSON.parse(data);      // Vamos a leer los datos de la Api. 
 
 const server = http.createServer((req, res) => {
     const pathName = req.url;
 
-    if (pathName === '/' | pathName === '/overview') {
+    // Overview page
+    if (pathName === '/' || pathName === '/overview') {
+        res.writeHead(200, { 'Content-type': 'text/html'});
         res.end('Estamos en este momento comunicanonos por overview');
+
+        const cardHtml = dataObj.map()
+9
+        res.end(tempOverview);
+
+    // Product page
     } else if (pathName === '/product') {
-        res.end('Estamos en este momento comunicanonos por product');        
+        res.end('Estamos en este momento comunicanonos por product');
+        
+    // API
     } else if (pathName === '/api') {
-        res.writeHead(200, { 'Content-type': 'application/json'} )
+        res.writeHead(200, { 'Content-type': 'application/json'});
         res.end(data);
+
+    // Not fount
     } else {
         res.writeHead(404, {
             'Content-type': 'text/html',
@@ -55,4 +71,4 @@ const server = http.createServer((req, res) => {
 
 server.listen(8000, '127.0.0.1', () => {
     console.log('Listening to requests on port 8000');
-}) 
+});
