@@ -1,4 +1,3 @@
-const { RSA_NO_PADDING } = require('constants');
 const fs = require('fs');
 const http = require('http');
 const url = require('url');
@@ -40,7 +39,9 @@ const replaceTemplate = (temp, product) => {
     output = output.replace(/{%QUANTITY%}/g, product.quantity);
     output = output.replace(/{%DESCRIPTION%}/g, product.description);
     output = output.replace(/{%ID%}/g, product.id);
-    output = output.replace(/{%IMAGE%}/g, product.IMAGE);
+
+    if(!product.organic) output = replace(/{%NOT_ORGANIC%}/g, 'not-organic');
+    return output;
 }
 
 const tempOverview = fs.readFileSync(`${__dirname}/templates/template-overview.html`, 'utf-8'); 
@@ -51,23 +52,24 @@ const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8'); // lee
 const dataObj = JSON.parse(data);      // Vamos a leer los datos de la Api. 
 
 const server = http.createServer((req, res) => {
-    const pathName = req.url;
+
+    const { query, pathname } =  url.parse(req.url, true);    // Variables fuera de la url.
 
     // Overview page
-    if (pathName === '/' || pathName === '/overview') {
+    if (pathname === '/' || pathname === '/overview') {
         res.writeHead(200, { 'Content-type': 'text/html'});
-        res.end('Estamos en este momento comunicanonos por overview');
 
-        const cardHtml = dataObj.map(el => repleceTemplate(tempCard, el))
-9
-        res.end(tempOverview);
+        const cardsHtml = dataObj.map(el => replaceTemplate(tempCard, el));
+        const output = tempOverview.replace('{%PRODUCT_CARDS%}', cardsHtml);
+        res.end(output);
 
     // Product page
-    } else if (pathName === '/product') {
+    } else if (pathname === '/product') {
+        console.log(query);
         res.end('Estamos en este momento comunicanonos por product');
         
     // API
-    } else if (pathName === '/api') {
+    } else if (pathname === '/api') {
         res.writeHead(200, { 'Content-type': 'application/json'});
         res.end(data);
 
