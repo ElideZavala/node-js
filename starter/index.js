@@ -1,7 +1,8 @@
 const fs = require('fs');
 const http = require('http');
 const url = require('url');
-const x = require('./modules/replaceTemplate');
+
+const slugify = require('slugify');
 
 ////////////////////////////////
 // FILES
@@ -46,7 +47,7 @@ const server = http.createServer((req, res) => {
     if (pathname === '/' || pathname === '/overview') {
         res.writeHead(200, { 'Content-type': 'text/html'});
 
-        const cardsHtml = dataObj.map(el => replaceTemplate(tempCard, el));
+        const cardsHtml = dataObj.map(el => replaceTemplate(tempCard, el)).join('');
         const output = tempOverview.replace('{%PRODUCT_CARDS%}', cardsHtml);
         res.end(output);
 
