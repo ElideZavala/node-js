@@ -17,7 +17,8 @@
   },
   "homepage": "https://github.com/ElideZavala/node-js#readme",
   "dependencies": {
-    "slugify": "^1.6.4"
+    "express": "^4.17.2",
+    "slugify": "~1.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

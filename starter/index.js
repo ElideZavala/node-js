@@ -1,8 +1,8 @@
 const fs = require('fs');
 const http = require('http');
 const url = require('url');
-
 const slugify = require('slugify');
+const replaceTemplate = require('./modules/replaceTemplate');
 
 ////////////////////////////////
 // FILES
@@ -38,6 +38,11 @@ const tempProduct = fs.readFileSync(`${__dirname}/templates/template-product.htm
 
 const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8'); // lee los  datos del directorio JSON. 
 const dataObj = JSON.parse(data);      // Vamos a leer los datos de la Api. 
+
+const slugs = dataObj.map(el => slugify(el.productName));
+console.log(slugs)
+
+console.log(slugify('Fresh Avocados', { lowercase: true })); 
 
 const server = http.createServer((req, res) => {
 
